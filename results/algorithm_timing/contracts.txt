@@ -1,0 +1,64 @@
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/candidates.d -c src/candidates.cpp -o build/obj/release/candidates.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/cli.d -c src/cli.cpp -o build/obj/release/cli.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/error.d -c src/error.cpp -o build/obj/release/error.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/input.d -c src/input.cpp -o build/obj/release/input.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/inverted_index.d -c src/inverted_index.cpp -o build/obj/release/inverted_index.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/metrics.d -c src/metrics.cpp -o build/obj/release/metrics.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/mode.d -c src/mode.cpp -o build/obj/release/mode.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/normalize.d -c src/normalize.cpp -o build/obj/release/normalize.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/operators.d -c src/operators.cpp -o build/obj/release/operators.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/plan.d -c src/plan.cpp -o build/obj/release/plan.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/resources.d -c src/resources.cpp -o build/obj/release/resources.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/scheduler.d -c src/scheduler.cpp -o build/obj/release/scheduler.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/scheduler_ablation.d -c src/scheduler_ablation.cpp -o build/obj/release/scheduler_ablation.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/set_ops.d -c src/set_ops.cpp -o build/obj/release/set_ops.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/storage.d -c src/storage.cpp -o build/obj/release/storage.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/types.d -c src/types.cpp -o build/obj/release/types.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/validation.d -c src/validation.cpp -o build/obj/release/validation.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/work_queue.d -c src/work_queue.cpp -o build/obj/release/work_queue.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -Itests -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/tests/algorithm_contract.d -c tests/algorithm_contract.cpp -o build/obj/release/tests/algorithm_contract.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -Itests -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/tests/input_contract.d -c tests/input_contract.cpp -o build/obj/release/tests/input_contract.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -Itests -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/tests/metrics_contract.d -c tests/metrics_contract.cpp -o build/obj/release/tests/metrics_contract.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -Itests -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/tests/plan_contract.d -c tests/plan_contract.cpp -o build/obj/release/tests/plan_contract.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -Itests -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/tests/scheduler_contract.d -c tests/scheduler_contract.cpp -o build/obj/release/tests/scheduler_contract.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -Itests -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/tests/storage_contract.d -c tests/storage_contract.cpp -o build/obj/release/tests/storage_contract.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -Itests -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/tests/support/test_harness.d -c tests/support/test_harness.cpp -o build/obj/release/tests/support/test_harness.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/main_labeled.d -c src/main_labeled.cpp -o build/obj/release/main_labeled.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/main_unlabeled.d -c src/main_unlabeled.cpp -o build/obj/release/main_unlabeled.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -Itests -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -MF build/dep/release/tests/driver.d -c tests/driver.cpp -o build/obj/release/tests/driver.o
+g++ build/obj/release/candidates.o build/obj/release/cli.o build/obj/release/error.o build/obj/release/input.o build/obj/release/inverted_index.o build/obj/release/metrics.o build/obj/release/mode.o build/obj/release/normalize.o build/obj/release/operators.o build/obj/release/plan.o build/obj/release/resources.o build/obj/release/scheduler.o build/obj/release/scheduler_ablation.o build/obj/release/set_ops.o build/obj/release/storage.o build/obj/release/types.o build/obj/release/validation.o build/obj/release/work_queue.o build/obj/release/main_labeled.o -pthread   -o build/bin/hgmatch_labeled
+g++ build/obj/release/candidates.o build/obj/release/cli.o build/obj/release/error.o build/obj/release/input.o build/obj/release/inverted_index.o build/obj/release/metrics.o build/obj/release/mode.o build/obj/release/normalize.o build/obj/release/operators.o build/obj/release/plan.o build/obj/release/resources.o build/obj/release/scheduler.o build/obj/release/scheduler_ablation.o build/obj/release/set_ops.o build/obj/release/storage.o build/obj/release/types.o build/obj/release/validation.o build/obj/release/work_queue.o build/obj/release/main_unlabeled.o -pthread   -o build/bin/hgmatch_unlabeled
+g++ build/obj/release/candidates.o build/obj/release/cli.o build/obj/release/error.o build/obj/release/input.o build/obj/release/inverted_index.o build/obj/release/metrics.o build/obj/release/mode.o build/obj/release/normalize.o build/obj/release/operators.o build/obj/release/plan.o build/obj/release/resources.o build/obj/release/scheduler.o build/obj/release/scheduler_ablation.o build/obj/release/set_ops.o build/obj/release/storage.o build/obj/release/types.o build/obj/release/validation.o build/obj/release/work_queue.o build/obj/release/tests/driver.o -pthread   -o build/tests/driver
+g++ build/obj/release/candidates.o build/obj/release/cli.o build/obj/release/error.o build/obj/release/input.o build/obj/release/inverted_index.o build/obj/release/metrics.o build/obj/release/mode.o build/obj/release/normalize.o build/obj/release/operators.o build/obj/release/plan.o build/obj/release/resources.o build/obj/release/scheduler.o build/obj/release/scheduler_ablation.o build/obj/release/set_ops.o build/obj/release/storage.o build/obj/release/types.o build/obj/release/validation.o build/obj/release/work_queue.o build/obj/release/tests/algorithm_contract.o build/obj/release/tests/input_contract.o build/obj/release/tests/metrics_contract.o build/obj/release/tests/plan_contract.o build/obj/release/tests/scheduler_contract.o build/obj/release/tests/storage_contract.o build/obj/release/tests/support/test_harness.o -pthread   -o build/tests/contracts
+./build/tests/contracts '' ''
+PASS algorithm_contract/single_edge
+PASS algorithm_contract/symmetric
+PASS algorithm_contract/validation_labels
+PASS algorithm_contract/validation_four_way
+PASS algorithm_contract/exact_not_containment
+PASS algorithm_contract/extra_edges
+PASS algorithm_contract/local_degree
+PASS algorithm_contract/reuse
+PASS algorithm_contract/nested65
+PASS input_contract/paired_singleton
+PASS metrics_contract/sha
+PASS metrics_contract/overflow
+PASS metrics_contract/algorithm_time_aggregation
+PASS metrics_contract/algorithm_times_all_modes
+PASS plan_contract/union_overlap_not_pairwise_sum
+PASS plan_contract/quadratic_star_order
+PASS scheduler_contract/parallel_modes
+PASS scheduler_contract/exception_cleanup
+PASS scheduler_contract/stolen_batch_is_lifo
+PASS scheduler_contract/cancellation_releases_pool
+PASS storage_contract/duplicates
+PASS storage_contract/signatures
+22 tests passed
+python3 tests/cli_contract.py
+CLI defaults, input errors, singletons and timeout: PASS
+python3 tests/pool_contract.py
+persistent pool in all schedulers: PASS
+python3 tests/experiment_contract.py
+experiment query-first means, failures and denominators: PASS
+python3 tools/oracle.py --self-test
+oracle manual semantic cases: PASS

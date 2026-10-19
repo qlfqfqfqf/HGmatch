@@ -1,0 +1,45 @@
+{
+  "description": "GPU HGMatch protocol: query sampling and repetitions retained; CPU thread/scheduler experiments do not apply.",
+  "repeats": 3,
+  "queries_per_setting": 20,
+  "timeout_seconds": 3600,
+  "settings": {
+    "q2": [
+      2,
+      5,
+      15
+    ],
+    "q3": [
+      3,
+      10,
+      20
+    ],
+    "q4": [
+      4,
+      10,
+      30
+    ],
+    "q6": [
+      6,
+      15,
+      35
+    ]
+  },
+  "configurations": [
+    {
+      "gpu_id": 0,
+      "batch_capacity": 4096,
+      "candidate_tile_size": 65536
+    },
+    {
+      "gpu_id": 0,
+      "batch_capacity": 16384,
+      "candidate_tile_size": 65536
+    },
+    {
+      "gpu_id": 0,
+      "batch_capacity": 65536,
+      "candidate_tile_size": 65536
+    }
+  ]
+}

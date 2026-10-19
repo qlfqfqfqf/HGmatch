@@ -1,0 +1,216 @@
+{
+  "schema_version": 3,
+  "system": "HGMatch-reproduction",
+  "label_mode": "unlabeled",
+  "count_semantics": "ordered_hyperedge_embeddings",
+  "status": "ok",
+  "message": "",
+  "embedding_count": "2043072",
+  "partial_embedding_count": null,
+  "data_load_time_s": 0.202355496,
+  "data_normalize_time_s": 0.06297976,
+  "partition_build_time_s": 0.003664146,
+  "index_build_time_s": 0.036505645,
+  "preprocessing_time_s": 0.305526947,
+  "query_load_time_s": 0.001597951,
+  "plan_time_s": 5.361e-06,
+  "matching_time_s": 2.565726427,
+  "online_query_time_s": 2.565731788,
+  "candidate_generation_time_s": 0.2627457000000004,
+  "embedding_validation_time_s": 9.559794214000288,
+  "threads": 4,
+  "scheduler": "lifo-steal",
+  "diagnostics": "none",
+  "seed": 0,
+  "timeout_seconds": 3600.0,
+  "data_id_base": 1,
+  "query_id_base": 0,
+  "query_input_protocol": "odd_integer_ignored_even_hyperedge",
+  "normalization": "deduplicate_vertex_ids_then_exact_edges",
+  "data": {
+    "vertices": 1494,
+    "used_vertices": 1494,
+    "raw_edges": 60987,
+    "unique_edges": 54933,
+    "removed_duplicate_edges": 6054,
+    "removed_duplicate_vertices": 0,
+    "raw_incidences": 1248666,
+    "incidences": 1216701,
+    "max_arity": 399,
+    "average_arity": 22.14881765059254,
+    "input_label_count": 2,
+    "matching_label_count": null,
+    "partitions": 341
+  },
+  "graph_storage_bytes": 16393864,
+  "signature_storage_bytes": 57568,
+  "inverted_index_bytes": 26499000,
+  "inverted_posting_payload_bytes": 9733608,
+  "storage_bytes_method": "owned_capacity_estimate: containers/node overhead estimated; allocator metadata excluded; not RSS",
+  "rss_after_index_bytes": 54644736,
+  "inputs": {
+    "data-edges": {
+      "path": "io/HB/hypergraph.txt",
+      "sha256": "53884bd3a3af6d7d315486afc034796c66721ddc43a0c310268e7b26b3340c12"
+    },
+    "data-nodes": {
+      "path": "io/HB/node.txt",
+      "sha256": "673196644b7e55d5b6889346e14260fdd57ac313119a4ec48a947ea535991596"
+    },
+    "query-edges": {
+      "path": "io/pattern_HB_4/patternEdge",
+      "sha256": "78b9ef36937497620df9c652e14cbefafafacbe120540662d739c8bb20f4424b"
+    },
+    "query-nodes": {
+      "path": "io/pattern_HB_4/patternNode",
+      "sha256": "7087e7cbbf5d1dca0124b6c55337b1f3531557ca660b52cdb601e80376314990"
+    }
+  },
+  "query": {
+    "vertices": 29,
+    "used_vertices": 29,
+    "raw_edges": 4,
+    "unique_edges": 4,
+    "removed_duplicate_edges": 0,
+    "removed_duplicate_vertices": 0,
+    "raw_incidences": 34,
+    "incidences": 34,
+    "max_arity": 27,
+    "average_arity": 8.5
+  },
+  "matching_order": [
+    1,
+    0,
+    2,
+    3
+  ],
+  "query_cardinalities": [
+    4369,
+    430,
+    7656,
+    7656
+  ],
+  "root_candidates": "430",
+  "per_depth": [
+    {
+      "matched_edges": 2,
+      "candidates": "166012",
+      "vertex_count_pass": "909",
+      "valid": "909",
+      "candidate_generation_time_s": 0.027350007,
+      "embedding_validation_time_s": 0.2438393160000007
+    },
+    {
+      "matched_edges": 3,
+      "candidates": "64071",
+      "vertex_count_pass": "57333",
+      "valid": "57333",
+      "candidate_generation_time_s": 0.006786094000000001,
+      "embedding_validation_time_s": 0.259084302000001
+    },
+    {
+      "matched_edges": 4,
+      "candidates": "2317046",
+      "vertex_count_pass": "2043072",
+      "valid": "2043072",
+      "candidate_generation_time_s": 0.22860959900000044,
+      "embedding_validation_time_s": 9.056870596000286
+    }
+  ],
+  "candidates_total": "2547129",
+  "vertex_count_pass_total": "2101314",
+  "valid_partial_total": "2101314",
+  "last_depth": {
+    "matched_edges": 4,
+    "candidates": "2317046",
+    "vertex_count_pass": "2043072",
+    "valid": "2043072",
+    "candidate_generation_time_s": 0.22860959900000044,
+    "embedding_validation_time_s": 9.056870596000286
+  },
+  "workers": [
+    {
+      "id": 0,
+      "thread_starts": 1,
+      "embedding_count": "515640",
+      "tasks": 530709,
+      "scan_tasks": 1,
+      "expand_tasks": 15068,
+      "sink_tasks": 515640,
+      "steal_attempts": 97,
+      "stolen_tasks": 540,
+      "thread_cpu_time_s": 2.5691089000000003,
+      "candidate_generation_time_s": 0.06748312500000019,
+      "embedding_validation_time_s": 2.3874540669998923,
+      "task_wall_time_s": null,
+      "steal_wall_time_s": null,
+      "idle_wall_time_s": null
+    },
+    {
+      "id": 1,
+      "thread_starts": 1,
+      "embedding_count": "509708",
+      "tasks": 522629,
+      "scan_tasks": 0,
+      "expand_tasks": 12921,
+      "sink_tasks": 509708,
+      "steal_attempts": 92,
+      "stolen_tasks": 745,
+      "thread_cpu_time_s": 2.5689902,
+      "candidate_generation_time_s": 0.05922056400000024,
+      "embedding_validation_time_s": 2.3960330500000926,
+      "task_wall_time_s": null,
+      "steal_wall_time_s": null,
+      "idle_wall_time_s": null
+    },
+    {
+      "id": 2,
+      "thread_starts": 1,
+      "embedding_count": "512475",
+      "tasks": 527875,
+      "scan_tasks": 0,
+      "expand_tasks": 15400,
+      "sink_tasks": 512475,
+      "steal_attempts": 22,
+      "stolen_tasks": 550,
+      "thread_cpu_time_s": 2.569067,
+      "candidate_generation_time_s": 0.0698513389999997,
+      "embedding_validation_time_s": 2.3853836150002206,
+      "task_wall_time_s": null,
+      "steal_wall_time_s": null,
+      "idle_wall_time_s": null
+    },
+    {
+      "id": 3,
+      "thread_starts": 1,
+      "embedding_count": "505249",
+      "tasks": 520532,
+      "scan_tasks": 0,
+      "expand_tasks": 15283,
+      "sink_tasks": 505249,
+      "steal_attempts": 53,
+      "stolen_tasks": 630,
+      "thread_cpu_time_s": 2.5690586,
+      "candidate_generation_time_s": 0.06619067200000034,
+      "embedding_validation_time_s": 2.390923482000081,
+      "task_wall_time_s": null,
+      "steal_wall_time_s": null,
+      "idle_wall_time_s": null
+    }
+  ],
+  "peak_rss_bytes": 55451648,
+  "matching_peak_rss_sampled_bytes": null,
+  "rss_sampling_interval_ms": null,
+  "environment": {
+    "os": "Linux 5.15.167.4-microsoft-standard-WSL2 x86_64",
+    "cpu_model": "Intel(R) Core(TM) Ultra 7 255HX",
+    "physical_cores": 20,
+    "logical_cpus": 20,
+    "affinity_cpus": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
+    "compiler": "g++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+    "build_flags": "-Iinclude -Ithird_party -Ibuild/generated -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG   ",
+    "source_sha256": "ac7ee5ef2f60c9fadc66980590b901034381afd2d4afba325721089bee86cfa5",
+    "dependency_sha256": "2dace4329be511aeae1c676424c7246db257168d3ca83cdec2f3596df777abf7"
+  },
+  "end_to_end_time_s": 2.948291423
+}

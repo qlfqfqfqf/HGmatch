@@ -1,0 +1,21 @@
+PASS algorithm_contract/single_edge
+PASS algorithm_contract/symmetric
+PASS algorithm_contract/validation_labels
+PASS algorithm_contract/validation_four_way
+PASS algorithm_contract/exact_not_containment
+PASS algorithm_contract/extra_edges
+PASS algorithm_contract/local_degree
+PASS algorithm_contract/reuse
+PASS algorithm_contract/nested65
+PASS input_contract/paired_singleton
+PASS metrics_contract/sha
+PASS metrics_contract/overflow
+PASS plan_contract/union_overlap_not_pairwise_sum
+PASS plan_contract/quadratic_star_order
+PASS scheduler_contract/parallel_modes
+PASS scheduler_contract/exception_cleanup
+PASS scheduler_contract/stolen_batch_is_lifo
+PASS scheduler_contract/cancellation_releases_pool
+PASS storage_contract/duplicates
+PASS storage_contract/signatures
+20 tests passed

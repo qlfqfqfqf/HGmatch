@@ -1,0 +1,148 @@
+{
+  "schema_version": 4,
+  "system": "HGMatch-GPU",
+  "backend": "cuda",
+  "timing_method": "cuda_events_single_stream",
+  "timing_complete": true,
+  "label_mode": "unlabeled",
+  "count_semantics": "ordered_hyperedge_embeddings",
+  "status": "ok",
+  "message": "",
+  "embedding_count": "6",
+  "partial_embedding_count": null,
+  "data_load_time_s": 0.002587473,
+  "data_normalize_time_s": 1.988e-06,
+  "partition_build_time_s": 0.001607655,
+  "index_build_time_s": 5.62e-07,
+  "preprocessing_time_s": 0.004203615,
+  "query_load_time_s": 0.001512822,
+  "plan_time_s": 1.675e-06,
+  "matching_time_s": 0.002617319,
+  "online_query_time_s": 0.002618994,
+  "candidate_generation_time_s": 0.0004750719964504242,
+  "embedding_validation_time_s": 0.0002765119969844818,
+  "cuda_initialize_time_s": 0.343091728,
+  "device_layout_time_s": 6.831e-06,
+  "host_to_device_time_s": 0.001929517,
+  "gpu_id": 0,
+  "gpu_memory_mb": 0,
+  "batch_capacity": 65536,
+  "candidate_tile_size": 65536,
+  "timeout_seconds": 3600.0,
+  "data_id_base": 1,
+  "query_id_base": 0,
+  "query_input_protocol": "odd_integer_ignored_even_hyperedge",
+  "normalization": "deduplicate_vertex_ids_then_exact_edges",
+  "data": {
+    "vertices": 3,
+    "used_vertices": 3,
+    "raw_edges": 3,
+    "unique_edges": 3,
+    "removed_duplicate_edges": 0,
+    "removed_duplicate_vertices": 0,
+    "raw_incidences": 6,
+    "incidences": 6,
+    "max_arity": 2,
+    "average_arity": 2.0,
+    "input_label_count": 1,
+    "matching_label_count": null,
+    "partitions": 1
+  },
+  "graph_storage_bytes": 408,
+  "signature_storage_bytes": 216,
+  "inverted_index_bytes": 272,
+  "inverted_posting_payload_bytes": 48,
+  "storage_bytes_method": "owned_capacity_estimate: containers/node overhead estimated; allocator metadata excluded; not RSS",
+  "rss_after_index_bytes": 4120576,
+  "inputs": {
+    "data-edges": {
+      "path": "build/gpu_smoke/de",
+      "sha256": "6662468b6fad2689537621d2df71ea029888c96baa9154f9d5d1a43feaa19a6c"
+    },
+    "data-nodes": {
+      "path": "build/gpu_smoke/dn",
+      "sha256": "78941bfd40aa197d4cf851c9d2493f0813749d55882abcbe95d40751beb66300"
+    },
+    "query-edges": {
+      "path": "build/gpu_smoke/qe",
+      "sha256": "56489845ab150ae8624ea6fd15c311cb585b185d0b614808e92e85fdf143ceed"
+    },
+    "query-nodes": {
+      "path": "build/gpu_smoke/qn",
+      "sha256": "78941bfd40aa197d4cf851c9d2493f0813749d55882abcbe95d40751beb66300"
+    }
+  },
+  "query": {
+    "vertices": 3,
+    "used_vertices": 3,
+    "raw_edges": 2,
+    "unique_edges": 2,
+    "removed_duplicate_edges": 0,
+    "removed_duplicate_vertices": 0,
+    "raw_incidences": 4,
+    "incidences": 4,
+    "max_arity": 2,
+    "average_arity": 2.0
+  },
+  "matching_order": [
+    0,
+    1
+  ],
+  "query_cardinalities": [
+    3,
+    3
+  ],
+  "gpu": {
+    "id": 0,
+    "name": "NVIDIA GeForce RTX 5070 Laptop GPU",
+    "compute_major": 12,
+    "compute_minor": 0,
+    "runtime_version": 13020,
+    "driver_version": 13010,
+    "total_memory_bytes": 8546484224,
+    "free_memory_bytes_at_start": 7338983424,
+    "memory_budget_bytes": 5871186736,
+    "peak_allocated_bytes": 3413007,
+    "actual_batch_capacity": 65536,
+    "block_size": 256,
+    "compute_streams": 1
+  },
+  "batches": 1,
+  "root_candidates": "3",
+  "per_depth": [
+    {
+      "matched_edges": 2,
+      "candidates": "9",
+      "vertex_count_pass": "6",
+      "valid": "6",
+      "candidate_generation_time_s": 0.0004750719964504242,
+      "embedding_validation_time_s": 0.0002765119969844818
+    }
+  ],
+  "candidates_total": "9",
+  "vertex_count_pass_total": "6",
+  "valid_partial_total": "6",
+  "last_depth": {
+    "matched_edges": 2,
+    "candidates": "9",
+    "vertex_count_pass": "6",
+    "valid": "6",
+    "candidate_generation_time_s": 0.0004750719964504242,
+    "embedding_validation_time_s": 0.0002765119969844818
+  },
+  "peak_rss_bytes": 126767104,
+  "environment": {
+    "os": "Linux 5.15.167.4-microsoft-standard-WSL2 x86_64",
+    "cpu_model": "Intel(R) Core(TM) Ultra 7 255HX",
+    "physical_cores": 20,
+    "logical_cpus": 20,
+    "affinity_cpus": "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
+    "compiler": "g++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0",
+    "cuda_compiler": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2026 NVIDIA Corporation\nBuilt on Thu_Mar_19_11:12:51_PM_PDT_2026\nCuda compilation tools, release 13.2, V13.2.78\nBuild cuda_13.2.r13.2/compiler.37668154_0",
+    "cuda_arch": "120",
+    "build_flags": "-Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -std=c++20 -arch=sm_120 -O3 -DNDEBUG -lineinfo  -Lbuild/cuda-sdk/nvidia/cu13/lib ",
+    "source_sha256": "371257742a2a4103eec49f105d0de30b19916f9596c6eb233b1ed43854425cb8",
+    "dependency_sha256": "c4dfc9cef23db18558391d578c4aa49c04a4523754bc99ad628df13e7e86cec9"
+  },
+  "end_to_end_time_s": 0.38636473
+}

@@ -1,0 +1,26 @@
+{
+  "dataset": "HB-upload",
+  "data_edges": "../io/HB/hypergraph.txt",
+  "data_nodes": "../io/HB/node.txt",
+  "data_id_base": 1,
+  "queries": [
+    {
+      "name": "HB_4",
+      "group": "uploaded",
+      "edges": "../io/pattern_HB_4/patternEdge",
+      "nodes": "../io/pattern_HB_4/patternNode",
+      "query_id_base": 0
+    }
+  ],
+  "modes": [
+    "labeled",
+    "unlabeled"
+  ],
+  "configurations": [
+    {
+      "gpu_id": 0,
+      "batch_capacity": 65536,
+      "candidate_tile_size": 65536
+    }
+  ]
+}

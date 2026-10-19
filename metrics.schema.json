@@ -1,0 +1,938 @@
+{
+  "description": "成功报告完整；提前失败仅要求基础字段，尚未生成的阶段对象允许缺失。",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 4,
+      "description": "GPU report v4; algorithm times are single-stream CUDA event intervals."
+    },
+    "system": {
+      "description": "系统标识 HGMatch-reproduction。",
+      "type": "string",
+      "const": "HGMatch-GPU"
+    },
+    "label_mode": {
+      "description": "labeled 或 unlabeled，由可执行文件固定。",
+      "type": "string"
+    },
+    "count_semantics": {
+      "description": "ordered_hyperedge_embeddings：按模式边位置排列的数据边映射数，不乘顶点排列，不除模式自同构。",
+      "type": "string"
+    },
+    "status": {
+      "description": "ok/input_error/timeout/out_of_memory/count_overflow/internal_error；只有 ok 表示完整计数。",
+      "type": "string",
+      "enum": [
+        "ok",
+        "input_error",
+        "timeout",
+        "out_of_memory",
+        "count_overflow",
+        "internal_error",
+        "gpu_unavailable",
+        "cuda_error"
+      ]
+    },
+    "message": {
+      "description": "失败原因；成功为空字符串。",
+      "type": "string"
+    },
+    "embedding_count": {
+      "description": "完整超边映射数量，十进制字符串（128 位无符号）；非 ok 为 null。",
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9]+$"
+    },
+    "partial_embedding_count": {
+      "description": "失败前已到达 SINK 的计数；成功为 null；匹配前失败通常为 null，计划超时为字符串 0。",
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9]+$"
+    },
+    "data_load_time_s": {
+      "description": "读取数据边和标签文本的秒数。",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "data_normalize_time_s": {
+      "description": "数据边内去重、精确边去重、统计的秒数。",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "partition_build_time_s": {
+      "description": "移动规范化数据、构造签名分区的秒数。",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "index_build_time_s": {
+      "description": "构建分区内顶点到超边 ID 倒排表的秒数（Fig.6）。",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "preprocessing_time_s": {
+      "description": "数据读取起至倒排索引完成的墙钟秒数，含统计等开销，不要求等于分项和。",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "query_load_time_s": {
+      "description": "模式读取、规范化、合法性验证、构造查询图的秒数。",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "plan_time_s": {
+      "description": "Algorithm 3 生成匹配顺序的秒数。",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "matching_time_s": {
+      "description": "Host wall seconds from GPU SCAN start through final GPU counters download; excludes preprocessing, planning, device layout, upload and JSON output; includes control, compaction, expansion and count work.",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "online_query_time_s": {
+      "description": "plan_time_s + matching_time_s，在线计划与计数总秒数；不含报告组装。",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "timeout_seconds": {
+      "description": "在线阶段计划与匹配共用 deadline 秒数；0 关闭；不限制读文件或建索引。",
+      "type": "number",
+      "minimum": 0
+    },
+    "data_id_base": {
+      "description": "数据外部顶点编号起点，默认 1；ID i 对应 node.txt 第 i-base+1 物理行。",
+      "type": "integer",
+      "minimum": 0
+    },
+    "query_id_base": {
+      "description": "模式外部编号起点，默认 0；ID i 对应 patternNode 第 i-base+1 物理行。",
+      "type": "integer",
+      "minimum": 0
+    },
+    "query_input_protocol": {
+      "description": "固定 odd_integer_ignored_even_hyperedge，不存在格式切换。",
+      "type": "string"
+    },
+    "normalization": {
+      "description": "先去除边内重复顶点，再按完整顶点集合去除重复边，保留首次出现次序。",
+      "type": "string"
+    },
+    "data": {
+      "description": "数据图统计，规范化后的简单超图。",
+      "type": "object",
+      "properties": {
+        "vertices": {
+          "description": "标签文件行数；包含数据图孤立点，查询图禁止孤立点。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "used_vertices": {
+          "description": "规范化边集合覆盖的不同顶点数。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "raw_edges": {
+          "description": "读取到的原始实际超边记录数；模式忽略行不计。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "unique_edges": {
+          "description": "精确去重后超边数。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "removed_duplicate_edges": {
+          "description": "原始超边数减规范化超边数。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "removed_duplicate_vertices": {
+          "description": "所有原始边内重复顶点出现次数的总和，在边去重前统计。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "raw_incidences": {
+          "description": "原始实际边中顶点项数总和。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "incidences": {
+          "description": "规范化后各边大小之和。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_arity": {
+          "description": "规范化最大超边大小；无边为0。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "average_arity": {
+          "description": "规范化 incidences/unique_edges；无边为0。",
+          "type": "number",
+          "minimum": 0
+        },
+        "input_label_count": {
+          "description": "输入标签不同取值数，仅输入统计，无标签匹配不使用该值。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "matching_label_count": {
+          "description": "有标签匹配的不同标签数；无标签为 null。",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "partitions": {
+          "description": "不同超边签名分区数；无标签即不同超边大小数。",
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "vertices",
+        "used_vertices",
+        "raw_edges",
+        "unique_edges",
+        "removed_duplicate_edges",
+        "removed_duplicate_vertices",
+        "raw_incidences",
+        "incidences",
+        "max_arity",
+        "average_arity",
+        "input_label_count",
+        "matching_label_count",
+        "partitions"
+      ]
+    },
+    "graph_storage_bytes": {
+      "description": "数据图、边数组、边ID数组、源行号、标签等拥有容量的字节估算；不等于文件大小或 RSS。",
+      "type": "integer",
+      "minimum": 0
+    },
+    "signature_storage_bytes": {
+      "description": "分区对象、签名及签名查找哈希表容量/节点开销字节估算。",
+      "type": "integer",
+      "minimum": 0
+    },
+    "inverted_index_bytes": {
+      "description": "倒排表桶、节点及 posting 容量字节估算，不含分区对象；分配器元数据未计。",
+      "type": "integer",
+      "minimum": 0
+    },
+    "inverted_posting_payload_bytes": {
+      "description": "倒排中实际 EdgeId 数量乘 sizeof(EdgeId)，字节；不含容量余量与节点开销。",
+      "type": "integer",
+      "minimum": 0
+    },
+    "storage_bytes_method": {
+      "description": "内存计量方法文本；容量/节点估算，不是精确分配器计数。",
+      "type": "string"
+    },
+    "rss_after_index_bytes": {
+      "description": "索引完成后的当前进程 RSS 字节，来自 Linux /proc/self/statm。",
+      "type": "integer",
+      "minimum": 0
+    },
+    "inputs": {
+      "description": "四个输入文件的路径与 SHA256；哈希在匹配计时外生成。",
+      "type": "object",
+      "properties": {
+        "data-edges": {
+          "description": "输入文件 data-edges 的路径和摘要。",
+          "type": "object",
+          "properties": {
+            "path": {
+              "description": "本次运行实际使用的文件路径。",
+              "type": "string"
+            },
+            "sha256": {
+              "description": "文件原始字节的 SHA256 十六进制摘要。",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ]
+        },
+        "data-nodes": {
+          "description": "输入文件 data-nodes 的路径和摘要。",
+          "type": "object",
+          "properties": {
+            "path": {
+              "description": "本次运行实际使用的文件路径。",
+              "type": "string"
+            },
+            "sha256": {
+              "description": "文件原始字节的 SHA256 十六进制摘要。",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ]
+        },
+        "query-edges": {
+          "description": "输入文件 query-edges 的路径和摘要。",
+          "type": "object",
+          "properties": {
+            "path": {
+              "description": "本次运行实际使用的文件路径。",
+              "type": "string"
+            },
+            "sha256": {
+              "description": "文件原始字节的 SHA256 十六进制摘要。",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ]
+        },
+        "query-nodes": {
+          "description": "输入文件 query-nodes 的路径和摘要。",
+          "type": "object",
+          "properties": {
+            "path": {
+              "description": "本次运行实际使用的文件路径。",
+              "type": "string"
+            },
+            "sha256": {
+              "description": "文件原始字节的 SHA256 十六进制摘要。",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "data-edges",
+        "data-nodes",
+        "query-edges",
+        "query-nodes"
+      ]
+    },
+    "query": {
+      "description": "查询图统计；边数、度等不计忽略行。",
+      "type": "object",
+      "properties": {
+        "vertices": {
+          "description": "标签文件行数；包含数据图孤立点，查询图禁止孤立点。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "used_vertices": {
+          "description": "规范化边集合覆盖的不同顶点数。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "raw_edges": {
+          "description": "读取到的原始实际超边记录数；模式忽略行不计。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "unique_edges": {
+          "description": "精确去重后超边数。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "removed_duplicate_edges": {
+          "description": "原始超边数减规范化超边数。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "removed_duplicate_vertices": {
+          "description": "所有原始边内重复顶点出现次数的总和，在边去重前统计。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "raw_incidences": {
+          "description": "原始实际边中顶点项数总和。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "incidences": {
+          "description": "规范化后各边大小之和。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_arity": {
+          "description": "规范化最大超边大小；无边为0。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "average_arity": {
+          "description": "规范化 incidences/unique_edges；无边为0。",
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "vertices",
+        "used_vertices",
+        "raw_edges",
+        "unique_edges",
+        "removed_duplicate_edges",
+        "removed_duplicate_vertices",
+        "raw_incidences",
+        "incidences",
+        "max_arity",
+        "average_arity"
+      ]
+    },
+    "matching_order": {
+      "description": "Algorithm 3 输出的规范化模式边零基索引顺序，不受 query-id-base 影响。",
+      "type": "array",
+      "items": {
+        "description": "输入文件 array_item 的路径和摘要。",
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "query_cardinalities": {
+      "description": "按规范化模式原边序排列的签名分区基数 Card，无分区为0。",
+      "type": "array",
+      "items": {
+        "description": "输入文件 array_item 的路径和摘要。",
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "root_candidates": {
+      "description": "SCAN 产生的首边候选数；不混入 EXPAND 的 C/F/V。",
+      "type": "string",
+      "pattern": "^[0-9]+$"
+    },
+    "per_depth": {
+      "description": "逐个已匹配边数 2..k 的候选过滤指标；单边模式为空数组。",
+      "type": "array",
+      "items": {
+        "description": "输入文件 per_depth_item 的路径和摘要。",
+        "type": "object",
+        "properties": {
+          "matched_edges": {
+            "description": "当前新前缀的超边数。",
+            "type": "integer",
+            "minimum": 0
+          },
+          "candidates": {
+            "description": "该深度 Algorithm 4 生成的候选总数 C（不同前缀分别计）。",
+            "type": "string",
+            "pattern": "^[0-9]+$"
+          },
+          "vertex_count_pass": {
+            "description": "C 中通过 Observation V.5 顶点并集大小检查的数量 F。",
+            "type": "string",
+            "pattern": "^[0-9]+$"
+          },
+          "valid": {
+            "description": "F 中通过 Algorithm 5 profile 多重集检查的数量 V。完整运行最后一层 V 等于 embedding_count。",
+            "type": "string",
+            "pattern": "^[0-9]+$"
+          },
+          "candidate_generation_time_s": {
+            "description": "This depth: All Algorithm 4 CUDA event intervals, including candidate union/intersection and compaction.",
+            "type": "number",
+            "minimum": 0
+          },
+          "embedding_validation_time_s": {
+            "description": "This depth: All Algorithm 5 CUDA event intervals, including vertex union count and exact profile multiset comparison; excludes child compaction and count reduction.",
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "matched_edges",
+          "candidates",
+          "vertex_count_pass",
+          "valid",
+          "candidate_generation_time_s",
+          "embedding_validation_time_s"
+        ]
+      }
+    },
+    "candidates_total": {
+      "description": "所有 EXPAND 深度 C 之和；不含根候选。",
+      "type": "string",
+      "pattern": "^[0-9]+$"
+    },
+    "vertex_count_pass_total": {
+      "description": "所有 EXPAND 深度 F 之和。",
+      "type": "string",
+      "pattern": "^[0-9]+$"
+    },
+    "valid_partial_total": {
+      "description": "所有 EXPAND 深度 V 之和，包含中间嵌入，不等于最终嵌入数。",
+      "type": "string",
+      "pattern": "^[0-9]+$"
+    },
+    "last_depth": {
+      "description": "per_depth 最后一项的副本；单边模式为 null；用于最终层 C/F/V 对照。",
+      "anyOf": [
+        {
+          "description": "输入文件 per_depth_item 的路径和摘要。",
+          "type": "object",
+          "properties": {
+            "matched_edges": {
+              "description": "当前新前缀的超边数。",
+              "type": "integer",
+              "minimum": 0
+            },
+            "candidates": {
+              "description": "该深度 Algorithm 4 生成的候选总数 C（不同前缀分别计）。",
+              "type": "string",
+              "pattern": "^[0-9]+$"
+            },
+            "vertex_count_pass": {
+              "description": "C 中通过 Observation V.5 顶点并集大小检查的数量 F。",
+              "type": "string",
+              "pattern": "^[0-9]+$"
+            },
+            "valid": {
+              "description": "F 中通过 Algorithm 5 profile 多重集检查的数量 V。完整运行最后一层 V 等于 embedding_count。",
+              "type": "string",
+              "pattern": "^[0-9]+$"
+            },
+            "candidate_generation_time_s": {
+              "description": "This depth: All Algorithm 4 CUDA event intervals, including candidate union/intersection and compaction.",
+              "type": "number",
+              "minimum": 0
+            },
+            "embedding_validation_time_s": {
+              "description": "This depth: All Algorithm 5 CUDA event intervals, including vertex union count and exact profile multiset comparison; excludes child compaction and count reduction.",
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "matched_edges",
+            "candidates",
+            "vertex_count_pass",
+            "valid",
+            "candidate_generation_time_s",
+            "embedding_validation_time_s"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "peak_rss_bytes": {
+      "description": "整个进程至报告生成时的峰值 RSS 字节，getrusage；包括读取与预处理峰值，不能声称仅匹配峰值。",
+      "type": "integer",
+      "minimum": 0
+    },
+    "environment": {
+      "description": "构建和运行环境，便于复现实验。",
+      "type": "object",
+      "properties": {
+        "os": {
+          "description": "Linux 内核/架构描述。",
+          "type": "string"
+        },
+        "cpu_model": {
+          "description": "/proc/cpuinfo 中 CPU 型号。",
+          "type": "string"
+        },
+        "physical_cores": {
+          "description": "当前可见 cpuinfo 的不同物理封装/核心组合数，不代表宿主机器全量核数。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "logical_cpus": {
+          "description": "std::thread::hardware_concurrency 可见逻辑处理器数。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "affinity_cpus": {
+          "description": "进程可用 CPU affinity 集合的逗号文本。",
+          "type": "string"
+        },
+        "compiler": {
+          "description": "实际编译器版本首行。",
+          "type": "string"
+        },
+        "build_flags": {
+          "description": "实际 CPPFLAGS、编译选项、链接选项记录。",
+          "type": "string"
+        },
+        "source_sha256": {
+          "description": "构建时 include/src 所有文件及 Makefile、build_config.py 的路径排序整体 SHA256；按路径+NUL+内容+NUL。",
+          "type": "string"
+        },
+        "dependency_sha256": {
+          "description": "构建时 third_party 所有文件同法生成的整体 SHA256。",
+          "type": "string"
+        },
+        "cuda_compiler": {
+          "type": "string"
+        },
+        "cuda_arch": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "os",
+        "cpu_model",
+        "physical_cores",
+        "logical_cpus",
+        "affinity_cpus",
+        "compiler",
+        "build_flags",
+        "source_sha256",
+        "dependency_sha256",
+        "cuda_compiler",
+        "cuda_arch"
+      ]
+    },
+    "end_to_end_time_s": {
+      "description": "CLI入口至报告末尾元数据填充完成的墙钟秒数；不含最终JSON写盘/标准输出。",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "candidate_generation_time_s": {
+      "description": "All Algorithm 4 CUDA event intervals, including candidate union/intersection and compaction. Single compute stream; GPU thread durations are not summed. Failures contain only completed measured intervals.",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "embedding_validation_time_s": {
+      "description": "All Algorithm 5 CUDA event intervals, including vertex union count and exact profile multiset comparison; excludes child compaction and count reduction. Single compute stream; GPU thread durations are not summed. Failures contain only completed measured intervals.",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "backend": {
+      "type": "string",
+      "const": "cuda"
+    },
+    "timing_method": {
+      "type": "string",
+      "const": "cuda_events_single_stream"
+    },
+    "timing_complete": {
+      "type": "boolean",
+      "description": "Whether this entire matching run completed with valid stage timing."
+    },
+    "gpu_id": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "gpu_memory_mb": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "batch_capacity": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "candidate_tile_size": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "batches": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "cuda_initialize_time_s": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "device_layout_time_s": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "host_to_device_time_s": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "gpu": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "compute_major": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "compute_minor": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "runtime_version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "driver_version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_memory_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "free_memory_bytes_at_start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "memory_budget_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "peak_allocated_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "actual_batch_capacity": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "block_size": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "compute_streams": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "compute_major",
+        "compute_minor",
+        "runtime_version",
+        "driver_version",
+        "total_memory_bytes",
+        "free_memory_bytes_at_start",
+        "memory_budget_bytes",
+        "peak_allocated_bytes",
+        "actual_batch_capacity",
+        "block_size",
+        "compute_streams",
+        "name"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "system",
+    "label_mode",
+    "count_semantics",
+    "status",
+    "message",
+    "embedding_count",
+    "partial_embedding_count",
+    "matching_time_s",
+    "plan_time_s",
+    "online_query_time_s",
+    "end_to_end_time_s",
+    "environment",
+    "backend",
+    "timing_method",
+    "timing_complete",
+    "candidate_generation_time_s",
+    "embedding_validation_time_s"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HGMatch GPU report v4",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "ok"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "schema_version",
+          "system",
+          "label_mode",
+          "count_semantics",
+          "status",
+          "message",
+          "embedding_count",
+          "partial_embedding_count",
+          "data_load_time_s",
+          "data_normalize_time_s",
+          "partition_build_time_s",
+          "index_build_time_s",
+          "preprocessing_time_s",
+          "query_load_time_s",
+          "plan_time_s",
+          "matching_time_s",
+          "online_query_time_s",
+          "timeout_seconds",
+          "data_id_base",
+          "query_id_base",
+          "query_input_protocol",
+          "normalization",
+          "data",
+          "graph_storage_bytes",
+          "signature_storage_bytes",
+          "inverted_index_bytes",
+          "inverted_posting_payload_bytes",
+          "storage_bytes_method",
+          "rss_after_index_bytes",
+          "inputs",
+          "query",
+          "matching_order",
+          "query_cardinalities",
+          "root_candidates",
+          "per_depth",
+          "candidates_total",
+          "vertex_count_pass_total",
+          "valid_partial_total",
+          "last_depth",
+          "peak_rss_bytes",
+          "environment",
+          "end_to_end_time_s",
+          "candidate_generation_time_s",
+          "embedding_validation_time_s",
+          "backend",
+          "timing_method",
+          "timing_complete",
+          "gpu_id",
+          "gpu_memory_mb",
+          "batch_capacity",
+          "candidate_tile_size",
+          "batches",
+          "cuda_initialize_time_s",
+          "device_layout_time_s",
+          "host_to_device_time_s",
+          "gpu"
+        ],
+        "properties": {
+          "embedding_count": {
+            "type": "string"
+          },
+          "partial_embedding_count": {
+            "type": "null"
+          },
+          "matching_time_s": {
+            "type": "number"
+          },
+          "candidate_generation_time_s": {
+            "type": "number"
+          },
+          "embedding_validation_time_s": {
+            "type": "number"
+          },
+          "timing_complete": {
+            "const": true
+          },
+          "gpu": {
+            "properties": {
+              "name": {
+                "minLength": 1
+              },
+              "actual_batch_capacity": {
+                "minimum": 1
+              },
+              "compute_streams": {
+                "const": 1
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "embedding_count": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "timeout"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "partial_embedding_count": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+make -j4 test test-drivers: PASS, 20 C++ contracts and CLI/pool/experiment/oracle tests
+Independent clean directory sanitizer build: PASS, no compiler warnings
+ASAN_OPTIONS=detect_leaks=0: 20 tests PASS
+JSON Schema v2: success and input-error reports PASS
+LeakSanitizer/ThreadSanitizer: not tested in this review

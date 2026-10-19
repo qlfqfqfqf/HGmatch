@@ -1,0 +1,19 @@
+make: Entering directory '/mnt/c/图计算/GPU超图挖掘/项目代码分阶段优化/包含有标签和无标签且初始超边去重的各版本汇总（9）/HGMatch复现（CPU）/hgmatch_cpu/build/package_check/hgmatch_gpu'
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/input.cpp -o build/obj/gpu-release/input.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/normalize.cpp -o build/obj/gpu-release/normalize.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/error.cpp -o build/obj/gpu-release/error.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/mode.cpp -o build/obj/gpu-release/mode.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/storage.cpp -o build/obj/gpu-release/storage.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/inverted_index.cpp -o build/obj/gpu-release/inverted_index.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/plan.cpp -o build/obj/gpu-release/plan.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/types.cpp -o build/obj/gpu-release/types.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/metrics.cpp -o build/obj/gpu-release/metrics.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/resources.cpp -o build/obj/gpu-release/resources.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/gpu_storage.cpp -o build/obj/gpu-release/gpu_storage.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/cli.cpp -o build/obj/gpu-release/cli.o
+../../cuda-sdk/nvidia/cu13/bin/nvcc -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -arch=sm_120 -O3 -DNDEBUG -lineinfo  -MMD -MP -c src/gpu_match.cu -o build/obj/gpu-release/gpu_match.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/main_labeled.cpp -o build/obj/gpu-release/main_labeled.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/main_unlabeled.cpp -o build/obj/gpu-release/main_unlabeled.o
+../../cuda-sdk/nvidia/cu13/bin/nvcc -std=c++20 -arch=sm_120 -O3 -DNDEBUG -lineinfo  build/obj/gpu-release/error.o build/obj/gpu-release/input.o build/obj/gpu-release/normalize.o build/obj/gpu-release/mode.o build/obj/gpu-release/storage.o build/obj/gpu-release/inverted_index.o build/obj/gpu-release/plan.o build/obj/gpu-release/types.o build/obj/gpu-release/metrics.o build/obj/gpu-release/resources.o build/obj/gpu-release/gpu_storage.o build/obj/gpu-release/cli.o build/obj/gpu-release/gpu_match.o build/obj/gpu-release/main_labeled.o -L../../cuda-sdk/nvidia/cu13/lib  -o build/bin/hgmatch_gpu_labeled
+../../cuda-sdk/nvidia/cu13/bin/nvcc -std=c++20 -arch=sm_120 -O3 -DNDEBUG -lineinfo  build/obj/gpu-release/error.o build/obj/gpu-release/input.o build/obj/gpu-release/normalize.o build/obj/gpu-release/mode.o build/obj/gpu-release/storage.o build/obj/gpu-release/inverted_index.o build/obj/gpu-release/plan.o build/obj/gpu-release/types.o build/obj/gpu-release/metrics.o build/obj/gpu-release/resources.o build/obj/gpu-release/gpu_storage.o build/obj/gpu-release/cli.o build/obj/gpu-release/gpu_match.o build/obj/gpu-release/main_unlabeled.o -L../../cuda-sdk/nvidia/cu13/lib  -o build/bin/hgmatch_gpu_unlabeled
+make: Leaving directory '/mnt/c/图计算/GPU超图挖掘/项目代码分阶段优化/包含有标签和无标签且初始超边去重的各版本汇总（9）/HGMatch复现（CPU）/hgmatch_cpu/build/package_check/hgmatch_gpu'

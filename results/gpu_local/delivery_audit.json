@@ -1,0 +1,16 @@
+{
+  "status": "complete",
+  "backend": "cuda",
+  "source_sha256": "371257742a2a4103eec49f105d0de30b19916f9596c6eb233b1ed43854425cb8",
+  "source_package": "dist/hgmatch_gpu_source.tar.gz",
+  "cpu_preprocessing_retained": true,
+  "cpu_mining_removed": true,
+  "both_gpu_executables_built": true,
+  "algorithm4_and_algorithm5_cuda_event_times_verified": true,
+  "host_contracts": 11,
+  "gpu_contracts": 12,
+  "full_tuple_differential_executions": 208,
+  "schema_v4": "pass",
+  "clean_package_build": "pass",
+  "server_acceptance": "deferred at user request; no RTX 5090 server results claimed"
+}

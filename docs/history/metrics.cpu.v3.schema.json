@@ -1,0 +1,983 @@
+{
+  "description": "成功报告完整；提前失败仅要求基础字段，尚未生成的阶段对象允许缺失。",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "description": "报告格式版本；当前为3，新增 Algorithm 4/5 独立累计计时；兼容历史v2报告。",
+      "type": "integer",
+      "minimum": 0,
+      "enum": [
+        2,
+        3
+      ]
+    },
+    "system": {
+      "description": "系统标识 HGMatch-reproduction。",
+      "type": "string"
+    },
+    "label_mode": {
+      "description": "labeled 或 unlabeled，由可执行文件固定。",
+      "type": "string"
+    },
+    "count_semantics": {
+      "description": "ordered_hyperedge_embeddings：按模式边位置排列的数据边映射数，不乘顶点排列，不除模式自同构。",
+      "type": "string"
+    },
+    "status": {
+      "description": "ok/input_error/timeout/out_of_memory/count_overflow/internal_error；只有 ok 表示完整计数。",
+      "type": "string",
+      "enum": [
+        "ok",
+        "input_error",
+        "timeout",
+        "out_of_memory",
+        "count_overflow",
+        "internal_error"
+      ]
+    },
+    "message": {
+      "description": "失败原因；成功为空字符串。",
+      "type": "string"
+    },
+    "embedding_count": {
+      "description": "完整超边映射数量，十进制字符串（128 位无符号）；非 ok 为 null。",
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9]+$"
+    },
+    "partial_embedding_count": {
+      "description": "失败前已到达 SINK 的计数；成功为 null；匹配前失败通常为 null，计划超时为字符串 0。",
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9]+$"
+    },
+    "data_load_time_s": {
+      "description": "读取数据边和标签文本的秒数。",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "data_normalize_time_s": {
+      "description": "数据边内去重、精确边去重、统计的秒数。",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "partition_build_time_s": {
+      "description": "移动规范化数据、构造签名分区的秒数。",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "index_build_time_s": {
+      "description": "构建分区内顶点到超边 ID 倒排表的秒数（Fig.6）。",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "preprocessing_time_s": {
+      "description": "数据读取起至倒排索引完成的墙钟秒数，含统计等开销，不要求等于分项和。",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "query_load_time_s": {
+      "description": "模式读取、规范化、合法性验证、构造查询图的秒数。",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "plan_time_s": {
+      "description": "Algorithm 3 生成匹配顺序的秒数。",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "matching_time_s": {
+      "description": "超图挖掘计数墙钟秒数：run 入口至工作线程启动、扫描/扩展/验证/调度/SINK、线程回收、计数归并完成；排除图和模式读取、索引构建、计划生成、JSON输出。计划阶段超时为 0，尚未进入在线阶段的错误为 null。",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "online_query_time_s": {
+      "description": "plan_time_s + matching_time_s，在线计划与计数总秒数；不含报告组装。",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "threads": {
+      "description": "请求的 CPU 工作线程数，正整数；不自动绑定 CPU。",
+      "type": "integer",
+      "minimum": 0
+    },
+    "scheduler": {
+      "description": "lifo-steal 为论文主调度，lifo-nosteal 为静态根边分配消融，bfs 为逐层物化消融。",
+      "type": "string"
+    },
+    "diagnostics": {
+      "description": "none 为主性能；workers 开启逐任务/窃取/空闲墙钟计时，有额外测量开销。",
+      "type": "string"
+    },
+    "seed": {
+      "description": "随机窃取的基础种子；worker 使用 seed+id。",
+      "type": "integer",
+      "minimum": 0
+    },
+    "timeout_seconds": {
+      "description": "在线阶段计划与匹配共用 deadline 秒数；0 关闭；不限制读文件或建索引。",
+      "type": "number",
+      "minimum": 0
+    },
+    "data_id_base": {
+      "description": "数据外部顶点编号起点，默认 1；ID i 对应 node.txt 第 i-base+1 物理行。",
+      "type": "integer",
+      "minimum": 0
+    },
+    "query_id_base": {
+      "description": "模式外部编号起点，默认 0；ID i 对应 patternNode 第 i-base+1 物理行。",
+      "type": "integer",
+      "minimum": 0
+    },
+    "query_input_protocol": {
+      "description": "固定 odd_integer_ignored_even_hyperedge，不存在格式切换。",
+      "type": "string"
+    },
+    "normalization": {
+      "description": "先去除边内重复顶点，再按完整顶点集合去除重复边，保留首次出现次序。",
+      "type": "string"
+    },
+    "data": {
+      "description": "数据图统计，规范化后的简单超图。",
+      "type": "object",
+      "properties": {
+        "vertices": {
+          "description": "标签文件行数；包含数据图孤立点，查询图禁止孤立点。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "used_vertices": {
+          "description": "规范化边集合覆盖的不同顶点数。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "raw_edges": {
+          "description": "读取到的原始实际超边记录数；模式忽略行不计。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "unique_edges": {
+          "description": "精确去重后超边数。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "removed_duplicate_edges": {
+          "description": "原始超边数减规范化超边数。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "removed_duplicate_vertices": {
+          "description": "所有原始边内重复顶点出现次数的总和，在边去重前统计。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "raw_incidences": {
+          "description": "原始实际边中顶点项数总和。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "incidences": {
+          "description": "规范化后各边大小之和。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_arity": {
+          "description": "规范化最大超边大小；无边为0。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "average_arity": {
+          "description": "规范化 incidences/unique_edges；无边为0。",
+          "type": "number",
+          "minimum": 0
+        },
+        "input_label_count": {
+          "description": "输入标签不同取值数，仅输入统计，无标签匹配不使用该值。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "matching_label_count": {
+          "description": "有标签匹配的不同标签数；无标签为 null。",
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "partitions": {
+          "description": "不同超边签名分区数；无标签即不同超边大小数。",
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "vertices",
+        "used_vertices",
+        "raw_edges",
+        "unique_edges",
+        "removed_duplicate_edges",
+        "removed_duplicate_vertices",
+        "raw_incidences",
+        "incidences",
+        "max_arity",
+        "average_arity",
+        "input_label_count",
+        "matching_label_count",
+        "partitions"
+      ]
+    },
+    "graph_storage_bytes": {
+      "description": "数据图、边数组、边ID数组、源行号、标签等拥有容量的字节估算；不等于文件大小或 RSS。",
+      "type": "integer",
+      "minimum": 0
+    },
+    "signature_storage_bytes": {
+      "description": "分区对象、签名及签名查找哈希表容量/节点开销字节估算。",
+      "type": "integer",
+      "minimum": 0
+    },
+    "inverted_index_bytes": {
+      "description": "倒排表桶、节点及 posting 容量字节估算，不含分区对象；分配器元数据未计。",
+      "type": "integer",
+      "minimum": 0
+    },
+    "inverted_posting_payload_bytes": {
+      "description": "倒排中实际 EdgeId 数量乘 sizeof(EdgeId)，字节；不含容量余量与节点开销。",
+      "type": "integer",
+      "minimum": 0
+    },
+    "storage_bytes_method": {
+      "description": "内存计量方法文本；容量/节点估算，不是精确分配器计数。",
+      "type": "string"
+    },
+    "rss_after_index_bytes": {
+      "description": "索引完成后的当前进程 RSS 字节，来自 Linux /proc/self/statm。",
+      "type": "integer",
+      "minimum": 0
+    },
+    "inputs": {
+      "description": "四个输入文件的路径与 SHA256；哈希在匹配计时外生成。",
+      "type": "object",
+      "properties": {
+        "data-edges": {
+          "description": "输入文件 data-edges 的路径和摘要。",
+          "type": "object",
+          "properties": {
+            "path": {
+              "description": "本次运行实际使用的文件路径。",
+              "type": "string"
+            },
+            "sha256": {
+              "description": "文件原始字节的 SHA256 十六进制摘要。",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ]
+        },
+        "data-nodes": {
+          "description": "输入文件 data-nodes 的路径和摘要。",
+          "type": "object",
+          "properties": {
+            "path": {
+              "description": "本次运行实际使用的文件路径。",
+              "type": "string"
+            },
+            "sha256": {
+              "description": "文件原始字节的 SHA256 十六进制摘要。",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ]
+        },
+        "query-edges": {
+          "description": "输入文件 query-edges 的路径和摘要。",
+          "type": "object",
+          "properties": {
+            "path": {
+              "description": "本次运行实际使用的文件路径。",
+              "type": "string"
+            },
+            "sha256": {
+              "description": "文件原始字节的 SHA256 十六进制摘要。",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ]
+        },
+        "query-nodes": {
+          "description": "输入文件 query-nodes 的路径和摘要。",
+          "type": "object",
+          "properties": {
+            "path": {
+              "description": "本次运行实际使用的文件路径。",
+              "type": "string"
+            },
+            "sha256": {
+              "description": "文件原始字节的 SHA256 十六进制摘要。",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "data-edges",
+        "data-nodes",
+        "query-edges",
+        "query-nodes"
+      ]
+    },
+    "query": {
+      "description": "查询图统计；边数、度等不计忽略行。",
+      "type": "object",
+      "properties": {
+        "vertices": {
+          "description": "标签文件行数；包含数据图孤立点，查询图禁止孤立点。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "used_vertices": {
+          "description": "规范化边集合覆盖的不同顶点数。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "raw_edges": {
+          "description": "读取到的原始实际超边记录数；模式忽略行不计。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "unique_edges": {
+          "description": "精确去重后超边数。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "removed_duplicate_edges": {
+          "description": "原始超边数减规范化超边数。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "removed_duplicate_vertices": {
+          "description": "所有原始边内重复顶点出现次数的总和，在边去重前统计。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "raw_incidences": {
+          "description": "原始实际边中顶点项数总和。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "incidences": {
+          "description": "规范化后各边大小之和。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_arity": {
+          "description": "规范化最大超边大小；无边为0。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "average_arity": {
+          "description": "规范化 incidences/unique_edges；无边为0。",
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "vertices",
+        "used_vertices",
+        "raw_edges",
+        "unique_edges",
+        "removed_duplicate_edges",
+        "removed_duplicate_vertices",
+        "raw_incidences",
+        "incidences",
+        "max_arity",
+        "average_arity"
+      ]
+    },
+    "matching_order": {
+      "description": "Algorithm 3 输出的规范化模式边零基索引顺序，不受 query-id-base 影响。",
+      "type": "array",
+      "items": {
+        "description": "输入文件 array_item 的路径和摘要。",
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "query_cardinalities": {
+      "description": "按规范化模式原边序排列的签名分区基数 Card，无分区为0。",
+      "type": "array",
+      "items": {
+        "description": "输入文件 array_item 的路径和摘要。",
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "root_candidates": {
+      "description": "SCAN 产生的首边候选数；不混入 EXPAND 的 C/F/V。",
+      "type": "string",
+      "pattern": "^[0-9]+$"
+    },
+    "per_depth": {
+      "description": "逐个已匹配边数 2..k 的候选过滤指标；单边模式为空数组。",
+      "type": "array",
+      "items": {
+        "description": "输入文件 per_depth_item 的路径和摘要。",
+        "type": "object",
+        "properties": {
+          "matched_edges": {
+            "description": "当前新前缀的超边数。",
+            "type": "integer",
+            "minimum": 0
+          },
+          "candidates": {
+            "description": "该深度 Algorithm 4 生成的候选总数 C（不同前缀分别计）。",
+            "type": "string",
+            "pattern": "^[0-9]+$"
+          },
+          "vertex_count_pass": {
+            "description": "C 中通过 Observation V.5 顶点并集大小检查的数量 F。",
+            "type": "string",
+            "pattern": "^[0-9]+$"
+          },
+          "valid": {
+            "description": "F 中通过 Algorithm 5 profile 多重集检查的数量 V。完整运行最后一层 V 等于 embedding_count。",
+            "type": "string",
+            "pattern": "^[0-9]+$"
+          },
+          "candidate_generation_time_s": {
+            "description": "该深度所有线程的Algorithm 4 候选超边生成累计墙钟秒数；所有工作线程各次 generate_candidates 调用区间之和，含中断调用已耗时间；不含 SCAN 根候选、嵌入复制、计数及子任务入队。默认启用。",
+            "type": "number",
+            "minimum": 0
+          },
+          "embedding_validation_time_s": {
+            "description": "该深度所有线程的Algorithm 5 嵌入验证累计墙钟秒数；包含顶点并集大小检查和通过后执行的 profile 多重集检查，含失败/中断调用；不含嵌入复制、计数及子任务入队。默认启用。",
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "matched_edges",
+          "candidates",
+          "vertex_count_pass",
+          "valid"
+        ]
+      }
+    },
+    "candidates_total": {
+      "description": "所有 EXPAND 深度 C 之和；不含根候选。",
+      "type": "string",
+      "pattern": "^[0-9]+$"
+    },
+    "vertex_count_pass_total": {
+      "description": "所有 EXPAND 深度 F 之和。",
+      "type": "string",
+      "pattern": "^[0-9]+$"
+    },
+    "valid_partial_total": {
+      "description": "所有 EXPAND 深度 V 之和，包含中间嵌入，不等于最终嵌入数。",
+      "type": "string",
+      "pattern": "^[0-9]+$"
+    },
+    "last_depth": {
+      "description": "per_depth 最后一项的副本；单边模式为 null；用于最终层 C/F/V 对照。",
+      "anyOf": [
+        {
+          "description": "输入文件 per_depth_item 的路径和摘要。",
+          "type": "object",
+          "properties": {
+            "matched_edges": {
+              "description": "当前新前缀的超边数。",
+              "type": "integer",
+              "minimum": 0
+            },
+            "candidates": {
+              "description": "该深度 Algorithm 4 生成的候选总数 C（不同前缀分别计）。",
+              "type": "string",
+              "pattern": "^[0-9]+$"
+            },
+            "vertex_count_pass": {
+              "description": "C 中通过 Observation V.5 顶点并集大小检查的数量 F。",
+              "type": "string",
+              "pattern": "^[0-9]+$"
+            },
+            "valid": {
+              "description": "F 中通过 Algorithm 5 profile 多重集检查的数量 V。完整运行最后一层 V 等于 embedding_count。",
+              "type": "string",
+              "pattern": "^[0-9]+$"
+            },
+            "candidate_generation_time_s": {
+              "description": "该深度所有线程的Algorithm 4 候选超边生成累计墙钟秒数；所有工作线程各次 generate_candidates 调用区间之和，含中断调用已耗时间；不含 SCAN 根候选、嵌入复制、计数及子任务入队。默认启用。",
+              "type": "number",
+              "minimum": 0
+            },
+            "embedding_validation_time_s": {
+              "description": "该深度所有线程的Algorithm 5 嵌入验证累计墙钟秒数；包含顶点并集大小检查和通过后执行的 profile 多重集检查，含失败/中断调用；不含嵌入复制、计数及子任务入队。默认启用。",
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "matched_edges",
+            "candidates",
+            "vertex_count_pass",
+            "valid"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "workers": {
+      "description": "每个 CPU 工作线程的统计，按线程 ID；超时可能只含部分工作。",
+      "type": "array",
+      "items": {
+        "description": "输入文件 worker_item 的路径和摘要。",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "零基工作线程编号。",
+            "type": "integer",
+            "minimum": 0
+          },
+          "embedding_count": {
+            "description": "该worker已完成的SINK计数，128位十进制字符串；失败时仅代表已完成部分。",
+            "type": "string",
+            "pattern": "^[0-9]+$"
+          },
+          "tasks": {
+            "description": "已开始执行的任务数。",
+            "type": "integer",
+            "minimum": 0
+          },
+          "scan_tasks": {
+            "description": "已开始的 SCAN 任务数。",
+            "type": "integer",
+            "minimum": 0
+          },
+          "expand_tasks": {
+            "description": "已开始的 EXPAND 任务数。",
+            "type": "integer",
+            "minimum": 0
+          },
+          "sink_tasks": {
+            "description": "已开始的 SINK 任务数。",
+            "type": "integer",
+            "minimum": 0
+          },
+          "steal_attempts": {
+            "description": "挑中非空 victim 后发起的一轮批量偷取尝试次数，不是逐任务 CAS 次数。",
+            "type": "integer",
+            "minimum": 0
+          },
+          "stolen_tasks": {
+            "description": "成功窃取的任务总数，含立即执行和转入本地队列者。",
+            "type": "integer",
+            "minimum": 0
+          },
+          "thread_cpu_time_s": {
+            "description": "该工作线程的 CPU 时间秒数；BFS 跨层累加，不等于墙钟。",
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "task_wall_time_s": {
+            "description": "workers 诊断开启时 execute_task 总墙钟秒数，含其中生成/入队子任务；否则 null。",
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "steal_wall_time_s": {
+            "description": "workers 诊断开启时找 victim/偷取/转存总墙钟秒数；不含任务执行；否则 null。",
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "idle_wall_time_s": {
+            "description": "workers 诊断开启时无任务循环中 yield 调用的总墙钟秒数，不是所有等待开销；否则 null。",
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "thread_starts": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "该worker实际启动的OS线程次数；正常完整运行三种调度均为1，创建失败时可为0。"
+          },
+          "candidate_generation_time_s": {
+            "description": "该工作线程所有深度的Algorithm 4 候选超边生成累计墙钟秒数；所有工作线程各次 generate_candidates 调用区间之和，含中断调用已耗时间；不含 SCAN 根候选、嵌入复制、计数及子任务入队。默认启用。",
+            "type": "number",
+            "minimum": 0
+          },
+          "embedding_validation_time_s": {
+            "description": "该工作线程所有深度的Algorithm 5 嵌入验证累计墙钟秒数；包含顶点并集大小检查和通过后执行的 profile 多重集检查，含失败/中断调用；不含嵌入复制、计数及子任务入队。默认启用。",
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "embedding_count",
+          "tasks",
+          "scan_tasks",
+          "expand_tasks",
+          "sink_tasks",
+          "steal_attempts",
+          "stolen_tasks",
+          "thread_cpu_time_s",
+          "task_wall_time_s",
+          "steal_wall_time_s",
+          "idle_wall_time_s",
+          "thread_starts"
+        ]
+      }
+    },
+    "peak_rss_bytes": {
+      "description": "整个进程至报告生成时的峰值 RSS 字节，getrusage；包括读取与预处理峰值，不能声称仅匹配峰值。",
+      "type": "integer",
+      "minimum": 0
+    },
+    "matching_peak_rss_sampled_bytes": {
+      "description": "预留匹配阶段 RSS 采样峰值，本实现未开启采样，始终 null。",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "rss_sampling_interval_ms": {
+      "description": "预留采样间隔，本实现始终 null。",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "environment": {
+      "description": "构建和运行环境，便于复现实验。",
+      "type": "object",
+      "properties": {
+        "os": {
+          "description": "Linux 内核/架构描述。",
+          "type": "string"
+        },
+        "cpu_model": {
+          "description": "/proc/cpuinfo 中 CPU 型号。",
+          "type": "string"
+        },
+        "physical_cores": {
+          "description": "当前可见 cpuinfo 的不同物理封装/核心组合数，不代表宿主机器全量核数。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "logical_cpus": {
+          "description": "std::thread::hardware_concurrency 可见逻辑处理器数。",
+          "type": "integer",
+          "minimum": 0
+        },
+        "affinity_cpus": {
+          "description": "进程可用 CPU affinity 集合的逗号文本。",
+          "type": "string"
+        },
+        "compiler": {
+          "description": "实际编译器版本首行。",
+          "type": "string"
+        },
+        "build_flags": {
+          "description": "实际 CPPFLAGS、编译选项、链接选项记录。",
+          "type": "string"
+        },
+        "source_sha256": {
+          "description": "构建时 include/src 所有文件及 Makefile、build_config.py 的路径排序整体 SHA256；按路径+NUL+内容+NUL。",
+          "type": "string"
+        },
+        "dependency_sha256": {
+          "description": "构建时 third_party 所有文件同法生成的整体 SHA256。",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "os",
+        "cpu_model",
+        "physical_cores",
+        "logical_cpus",
+        "affinity_cpus",
+        "compiler",
+        "build_flags",
+        "source_sha256",
+        "dependency_sha256"
+      ]
+    },
+    "end_to_end_time_s": {
+      "description": "CLI入口至报告末尾元数据填充完成的墙钟秒数；不含最终JSON写盘/标准输出。",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "candidate_generation_time_s": {
+      "description": "Algorithm 4 候选超边生成累计墙钟秒数；所有工作线程各次 generate_candidates 调用区间之和，含中断调用已耗时间；不含 SCAN 根候选、嵌入复制、计数及子任务入队。默认启用。 多线程累加时间可能超过 matching_time_s；匹配前输入失败为null，计划失败未执行算法为0。",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "embedding_validation_time_s": {
+      "description": "Algorithm 5 嵌入验证累计墙钟秒数；包含顶点并集大小检查和通过后执行的 profile 多重集检查，含失败/中断调用；不含嵌入复制、计数及子任务入队。默认启用。 多线程累加时间可能超过 matching_time_s；匹配前输入失败为null，计划失败未执行算法为0。",
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "system",
+    "label_mode",
+    "count_semantics",
+    "status",
+    "message",
+    "embedding_count",
+    "partial_embedding_count",
+    "matching_time_s",
+    "plan_time_s",
+    "online_query_time_s",
+    "end_to_end_time_s",
+    "environment"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HGMatch CPU report v3 (compatible with v2)",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "ok"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "schema_version",
+          "system",
+          "label_mode",
+          "count_semantics",
+          "status",
+          "message",
+          "embedding_count",
+          "partial_embedding_count",
+          "data_load_time_s",
+          "data_normalize_time_s",
+          "partition_build_time_s",
+          "index_build_time_s",
+          "preprocessing_time_s",
+          "query_load_time_s",
+          "plan_time_s",
+          "matching_time_s",
+          "online_query_time_s",
+          "threads",
+          "scheduler",
+          "diagnostics",
+          "seed",
+          "timeout_seconds",
+          "data_id_base",
+          "query_id_base",
+          "query_input_protocol",
+          "normalization",
+          "data",
+          "graph_storage_bytes",
+          "signature_storage_bytes",
+          "inverted_index_bytes",
+          "inverted_posting_payload_bytes",
+          "storage_bytes_method",
+          "rss_after_index_bytes",
+          "inputs",
+          "query",
+          "matching_order",
+          "query_cardinalities",
+          "root_candidates",
+          "per_depth",
+          "candidates_total",
+          "vertex_count_pass_total",
+          "valid_partial_total",
+          "last_depth",
+          "workers",
+          "peak_rss_bytes",
+          "matching_peak_rss_sampled_bytes",
+          "rss_sampling_interval_ms",
+          "environment",
+          "end_to_end_time_s"
+        ],
+        "properties": {
+          "embedding_count": {
+            "type": "string"
+          },
+          "partial_embedding_count": {
+            "type": "null"
+          },
+          "matching_time_s": {
+            "type": "number"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "embedding_count": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "timeout"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "partial_embedding_count": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": 3
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "candidate_generation_time_s",
+          "embedding_validation_time_s"
+        ],
+        "properties": {
+          "per_depth": {
+            "items": {
+              "required": [
+                "candidate_generation_time_s",
+                "embedding_validation_time_s"
+              ]
+            }
+          },
+          "last_depth": {
+            "anyOf": [
+              {
+                "type": "object",
+                "required": [
+                  "candidate_generation_time_s",
+                  "embedding_validation_time_s"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "workers": {
+            "items": {
+              "required": [
+                "candidate_generation_time_s",
+                "embedding_validation_time_s"
+              ]
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "ok"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "candidate_generation_time_s": {
+                  "type": "number"
+                },
+                "embedding_validation_time_s": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

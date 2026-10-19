@@ -1,0 +1,198 @@
+{
+  "schema_version": 2,
+  "system": "HGMatch-reproduction",
+  "label_mode": "unlabeled",
+  "count_semantics": "ordered_hyperedge_embeddings",
+  "status": "ok",
+  "message": "",
+  "embedding_count": "2043072",
+  "partial_embedding_count": null,
+  "data_load_time_s": 0.174819233,
+  "data_normalize_time_s": 0.084707063,
+  "partition_build_time_s": 0.005870086,
+  "index_build_time_s": 0.046427274,
+  "preprocessing_time_s": 0.311855153,
+  "query_load_time_s": 3.1767e-05,
+  "plan_time_s": 6.13e-06,
+  "matching_time_s": 4.870771137,
+  "online_query_time_s": 4.870777267,
+  "threads": 4,
+  "scheduler": "lifo-nosteal",
+  "diagnostics": "workers",
+  "seed": 0,
+  "timeout_seconds": 3600.0,
+  "data_id_base": 1,
+  "query_id_base": 0,
+  "query_input_protocol": "odd_integer_ignored_even_hyperedge",
+  "normalization": "deduplicate_vertex_ids_then_exact_edges",
+  "data": {
+    "vertices": 1494,
+    "used_vertices": 1494,
+    "raw_edges": 60987,
+    "unique_edges": 54933,
+    "removed_duplicate_edges": 6054,
+    "removed_duplicate_vertices": 0,
+    "raw_incidences": 1248666,
+    "incidences": 1216701,
+    "max_arity": 399,
+    "average_arity": 22.14881765059254,
+    "input_label_count": 2,
+    "matching_label_count": null,
+    "partitions": 341
+  },
+  "graph_storage_bytes": 16393864,
+  "signature_storage_bytes": 57568,
+  "inverted_index_bytes": 26499000,
+  "inverted_posting_payload_bytes": 9733608,
+  "storage_bytes_method": "owned_capacity_estimate: containers/node overhead estimated; allocator metadata excluded; not RSS",
+  "rss_after_index_bytes": 53190656,
+  "inputs": {
+    "data-edges": {
+      "path": "io/HB/hypergraph.txt",
+      "sha256": "53884bd3a3af6d7d315486afc034796c66721ddc43a0c310268e7b26b3340c12"
+    },
+    "data-nodes": {
+      "path": "io/HB/node.txt",
+      "sha256": "673196644b7e55d5b6889346e14260fdd57ac313119a4ec48a947ea535991596"
+    },
+    "query-edges": {
+      "path": "io/pattern_HB_4/patternEdge",
+      "sha256": "78b9ef36937497620df9c652e14cbefafafacbe120540662d739c8bb20f4424b"
+    },
+    "query-nodes": {
+      "path": "io/pattern_HB_4/patternNode",
+      "sha256": "7087e7cbbf5d1dca0124b6c55337b1f3531557ca660b52cdb601e80376314990"
+    }
+  },
+  "query": {
+    "vertices": 29,
+    "used_vertices": 29,
+    "raw_edges": 4,
+    "unique_edges": 4,
+    "removed_duplicate_edges": 0,
+    "removed_duplicate_vertices": 0,
+    "raw_incidences": 34,
+    "incidences": 34,
+    "max_arity": 27,
+    "average_arity": 8.5
+  },
+  "matching_order": [
+    1,
+    0,
+    2,
+    3
+  ],
+  "query_cardinalities": [
+    4369,
+    430,
+    7656,
+    7656
+  ],
+  "root_candidates": "430",
+  "per_depth": [
+    {
+      "matched_edges": 2,
+      "candidates": "166012",
+      "vertex_count_pass": "909",
+      "valid": "909"
+    },
+    {
+      "matched_edges": 3,
+      "candidates": "64071",
+      "vertex_count_pass": "57333",
+      "valid": "57333"
+    },
+    {
+      "matched_edges": 4,
+      "candidates": "2317046",
+      "vertex_count_pass": "2043072",
+      "valid": "2043072"
+    }
+  ],
+  "candidates_total": "2547129",
+  "vertex_count_pass_total": "2101314",
+  "valid_partial_total": "2101314",
+  "last_depth": {
+    "matched_edges": 4,
+    "candidates": "2317046",
+    "vertex_count_pass": "2043072",
+    "valid": "2043072"
+  },
+  "workers": [
+    {
+      "id": 0,
+      "thread_starts": 1,
+      "embedding_count": "761824",
+      "tasks": 782599,
+      "scan_tasks": 1,
+      "expand_tasks": 20774,
+      "sink_tasks": 761824,
+      "steal_attempts": 0,
+      "stolen_tasks": 0,
+      "thread_cpu_time_s": 4.868295062,
+      "task_wall_time_s": 4.740342779989043,
+      "steal_wall_time_s": 0.0,
+      "idle_wall_time_s": 0.0
+    },
+    {
+      "id": 1,
+      "thread_starts": 1,
+      "embedding_count": "452446",
+      "tasks": 466634,
+      "scan_tasks": 1,
+      "expand_tasks": 14187,
+      "sink_tasks": 452446,
+      "steal_attempts": 0,
+      "stolen_tasks": 0,
+      "thread_cpu_time_s": 4.866544847,
+      "task_wall_time_s": 2.516171563002109,
+      "steal_wall_time_s": 0.0,
+      "idle_wall_time_s": 1.657223615960703
+    },
+    {
+      "id": 2,
+      "thread_starts": 1,
+      "embedding_count": "397432",
+      "tasks": 408924,
+      "scan_tasks": 1,
+      "expand_tasks": 11491,
+      "sink_tasks": 397432,
+      "steal_attempts": 0,
+      "stolen_tasks": 0,
+      "thread_cpu_time_s": 4.869184267,
+      "task_wall_time_s": 2.1069091859935245,
+      "steal_wall_time_s": 0.0,
+      "idle_wall_time_s": 1.937957071957596
+    },
+    {
+      "id": 3,
+      "thread_starts": 1,
+      "embedding_count": "431370",
+      "tasks": 443591,
+      "scan_tasks": 1,
+      "expand_tasks": 12220,
+      "sink_tasks": 431370,
+      "steal_attempts": 0,
+      "stolen_tasks": 0,
+      "thread_cpu_time_s": 4.869117267,
+      "task_wall_time_s": 2.360313499997712,
+      "steal_wall_time_s": 0.0,
+      "idle_wall_time_s": 1.79156275891096
+    }
+  ],
+  "peak_rss_bytes": 53313536,
+  "matching_peak_rss_sampled_bytes": null,
+  "rss_sampling_interval_ms": null,
+  "environment": {
+    "os": "Linux 6.18.35 x86_64",
+    "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+    "physical_cores": 9,
+    "logical_cpus": 9,
+    "affinity_cpus": "0,1,2,3,4,5,6,7,8",
+    "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+    "build_flags": "-Iinclude -Ithird_party -Ibuild/generated -std=c++20 -pthread -Wall -Wextra -O3 -DNDEBUG   ",
+    "source_sha256": "17b477b052b530e389b6afbc76cabecd8f627856198e33fa027cc44fc1b99d8b",
+    "dependency_sha256": "2dace4329be511aeae1c676424c7246db257168d3ca83cdec2f3596df777abf7"
+  },
+  "end_to_end_time_s": 5.26447699
+}

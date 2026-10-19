@@ -1,0 +1,5 @@
+{"label_mode": "labeled", "threads": 1, "embedding_count": "954", "matching_time_s": 0.0067037, "candidate_generation_time_s": 0.0008325829999999998, "embedding_validation_time_s": 0.005469113}
+{"label_mode": "labeled", "threads": 4, "embedding_count": "954", "matching_time_s": 0.002693261, "candidate_generation_time_s": 0.001090832, "embedding_validation_time_s": 0.006971655000000003}
+{"label_mode": "unlabeled", "threads": 1, "embedding_count": "2043072", "matching_time_s": 10.102485916, "candidate_generation_time_s": 0.26145104600000174, "embedding_validation_time_s": 9.485842034999726}
+{"label_mode": "unlabeled", "threads": 4, "embedding_count": "2043072", "matching_time_s": 2.565726427, "candidate_generation_time_s": 0.2627457000000004, "embedding_validation_time_s": 9.559794214000288}
+HB timings, stdout/file consistency, counts and time aggregation: PASS

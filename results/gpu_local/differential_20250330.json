@@ -1,0 +1,7 @@
+{
+  "status": "pass",
+  "cases": 40,
+  "seed": 20250330,
+  "executions": 104,
+  "comparison": "full tuple sets and no duplicate tuples"
+}

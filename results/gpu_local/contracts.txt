@@ -1,0 +1,66 @@
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/error.cpp -o build/obj/gpu-release/error.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/input.cpp -o build/obj/gpu-release/input.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/normalize.cpp -o build/obj/gpu-release/normalize.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/mode.cpp -o build/obj/gpu-release/mode.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/storage.cpp -o build/obj/gpu-release/storage.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/inverted_index.cpp -o build/obj/gpu-release/inverted_index.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/plan.cpp -o build/obj/gpu-release/plan.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/types.cpp -o build/obj/gpu-release/types.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/metrics.cpp -o build/obj/gpu-release/metrics.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/resources.cpp -o build/obj/gpu-release/resources.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/gpu_storage.cpp -o build/obj/gpu-release/gpu_storage.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -Itests -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c tests/input_contract.cpp -o build/obj/gpu-release/tests/input_contract.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -Itests -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c tests/storage_contract.cpp -o build/obj/gpu-release/tests/storage_contract.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -Itests -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c tests/plan_contract.cpp -o build/obj/gpu-release/tests/plan_contract.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -Itests -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c tests/metrics_contract.cpp -o build/obj/gpu-release/tests/metrics_contract.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -Itests -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c tests/gpu_layout_contract.cpp -o build/obj/gpu-release/tests/gpu_layout_contract.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -Itests -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c tests/support/test_harness.cpp -o build/obj/gpu-release/tests/support/test_harness.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/cli.cpp -o build/obj/gpu-release/cli.o
+build/cuda-sdk/nvidia/cu13/bin/nvcc -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -arch=sm_120 -O3 -DNDEBUG -lineinfo  -MMD -MP -c src/gpu_match.cu -o build/obj/gpu-release/gpu_match.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/main_labeled.cpp -o build/obj/gpu-release/main_labeled.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c src/main_unlabeled.cpp -o build/obj/gpu-release/main_unlabeled.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -Itests -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c tests/algorithm_contract.cpp -o build/obj/gpu-release/tests/algorithm_contract.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -Itests -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c tests/gpu_contract.cpp -o build/obj/gpu-release/tests/gpu_contract.o
+g++ -Iinclude -Ithird_party -Ibuild/generated -Itests -std=c++20 -Wall -Wextra -O3 -DNDEBUG  -MMD -MP -c tests/driver.cpp -o build/obj/gpu-release/tests/driver.o
+g++ build/obj/gpu-release/error.o build/obj/gpu-release/input.o build/obj/gpu-release/normalize.o build/obj/gpu-release/mode.o build/obj/gpu-release/storage.o build/obj/gpu-release/inverted_index.o build/obj/gpu-release/plan.o build/obj/gpu-release/types.o build/obj/gpu-release/metrics.o build/obj/gpu-release/resources.o build/obj/gpu-release/gpu_storage.o build/obj/gpu-release/tests/input_contract.o build/obj/gpu-release/tests/storage_contract.o build/obj/gpu-release/tests/plan_contract.o build/obj/gpu-release/tests/metrics_contract.o build/obj/gpu-release/tests/gpu_layout_contract.o build/obj/gpu-release/tests/support/test_harness.o -Lbuild/cuda-sdk/nvidia/cu13/lib  -o build/tests/host_contracts
+./build/tests/host_contracts
+PASS input_contract/paired_singleton
+PASS storage_contract/duplicates
+PASS storage_contract/signatures
+PASS plan_contract/union_overlap_not_pairwise_sum
+PASS plan_contract/quadratic_star_order
+PASS metrics_contract/sha
+PASS metrics_contract/overflow
+PASS metrics_contract/gpu_phase_time_aggregation
+PASS metrics_contract/device_counter_carry_and_overflow
+PASS gpu_layout_contract/sparse_sorted_postings
+PASS gpu_layout_contract/dynamic_profiles65
+11 tests passed
+python3 tests/experiment_contract.py
+experiment query-first means, failures and denominators: PASS
+python3 tools/oracle.py --self-test
+oracle manual semantic cases: PASS
+build/cuda-sdk/nvidia/cu13/bin/nvcc -std=c++20 -arch=sm_120 -O3 -DNDEBUG -lineinfo  build/obj/gpu-release/error.o build/obj/gpu-release/input.o build/obj/gpu-release/normalize.o build/obj/gpu-release/mode.o build/obj/gpu-release/storage.o build/obj/gpu-release/inverted_index.o build/obj/gpu-release/plan.o build/obj/gpu-release/types.o build/obj/gpu-release/metrics.o build/obj/gpu-release/resources.o build/obj/gpu-release/gpu_storage.o build/obj/gpu-release/cli.o build/obj/gpu-release/gpu_match.o build/obj/gpu-release/main_labeled.o -Lbuild/cuda-sdk/nvidia/cu13/lib  -o build/bin/hgmatch_gpu_labeled
+build/cuda-sdk/nvidia/cu13/bin/nvcc -std=c++20 -arch=sm_120 -O3 -DNDEBUG -lineinfo  build/obj/gpu-release/error.o build/obj/gpu-release/input.o build/obj/gpu-release/normalize.o build/obj/gpu-release/mode.o build/obj/gpu-release/storage.o build/obj/gpu-release/inverted_index.o build/obj/gpu-release/plan.o build/obj/gpu-release/types.o build/obj/gpu-release/metrics.o build/obj/gpu-release/resources.o build/obj/gpu-release/gpu_storage.o build/obj/gpu-release/cli.o build/obj/gpu-release/gpu_match.o build/obj/gpu-release/main_unlabeled.o -Lbuild/cuda-sdk/nvidia/cu13/lib  -o build/bin/hgmatch_gpu_unlabeled
+build/cuda-sdk/nvidia/cu13/bin/nvcc -std=c++20 -arch=sm_120 -O3 -DNDEBUG -lineinfo  build/obj/gpu-release/error.o build/obj/gpu-release/input.o build/obj/gpu-release/normalize.o build/obj/gpu-release/mode.o build/obj/gpu-release/storage.o build/obj/gpu-release/inverted_index.o build/obj/gpu-release/plan.o build/obj/gpu-release/types.o build/obj/gpu-release/metrics.o build/obj/gpu-release/resources.o build/obj/gpu-release/gpu_storage.o build/obj/gpu-release/cli.o build/obj/gpu-release/gpu_match.o build/obj/gpu-release/tests/algorithm_contract.o build/obj/gpu-release/tests/gpu_contract.o build/obj/gpu-release/tests/support/test_harness.o -Lbuild/cuda-sdk/nvidia/cu13/lib  -o build/tests/gpu_contracts
+build/cuda-sdk/nvidia/cu13/bin/nvcc -std=c++20 -arch=sm_120 -O3 -DNDEBUG -lineinfo  build/obj/gpu-release/error.o build/obj/gpu-release/input.o build/obj/gpu-release/normalize.o build/obj/gpu-release/mode.o build/obj/gpu-release/storage.o build/obj/gpu-release/inverted_index.o build/obj/gpu-release/plan.o build/obj/gpu-release/types.o build/obj/gpu-release/metrics.o build/obj/gpu-release/resources.o build/obj/gpu-release/gpu_storage.o build/obj/gpu-release/cli.o build/obj/gpu-release/gpu_match.o build/obj/gpu-release/tests/driver.o -Lbuild/cuda-sdk/nvidia/cu13/lib  -o build/tests/gpu_driver
+./build/tests/gpu_contracts
+PASS algorithm_contract/single_edge
+PASS algorithm_contract/symmetric
+PASS algorithm_contract/validation_labels
+PASS algorithm_contract/validation_four_way
+PASS algorithm_contract/exact_not_containment
+PASS algorithm_contract/extra_edges
+PASS algorithm_contract/local_degree
+PASS algorithm_contract/reuse
+PASS algorithm_contract/nested65
+PASS gpu_contract/batches_preserve_counts
+PASS gpu_contract/validation_rejection_and_single_edge
+PASS gpu_contract/timed_controlled_cancellation
+12 tests passed
+python3 tests/cli_contract.py
+CLI defaults, input errors, singletons and timeout: PASS
+python3 tests/gpu_cli_contract.py
+GPU CLI batching, phase timings, no CPU fallback and memory errors: PASS
+python3 tests/gpu_experiment_contract.py
+GPU experiment runner, independent repetitions and time exports: PASS
